@@ -1,3 +1,6 @@
+# UrlShortener
+Enter a short url; get a long url redirect.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
