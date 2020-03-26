@@ -1,0 +1,7 @@
+type Url @model
+  @key (name: "byShortUrl", fields: ["shortUrl"], queryField: "urlByShortUrl")
+{
+  id: ID!
+  shortUrl: String!
+  longUrl: String!
+}
