@@ -2,4 +2,5 @@
   display: grid;
    grid-template-columns: 1fr 4fr 1fr;
    justify-items: center;
+   margin-top: 80px;
 }

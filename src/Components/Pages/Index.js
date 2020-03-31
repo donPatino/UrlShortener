@@ -1,6 +1,16 @@
 import React, {useState} from 'react';
 
-import { Button, TextField } from '@material-ui/core';
+import {
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField
+} from '@material-ui/core';
 
 import {Link} from "react-router-dom";
 
@@ -124,30 +134,37 @@ let AddURL = ({urls, updateUrls}) => {
 let Index = ({urls, updateUrls}) => (
   <div className="container">
     <AddURL urls={urls} updateUrls={updateUrls} />
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>KEY</th>
-            <th>Destination</th>
-          </tr>
-        </thead>
-        <tbody>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              Key
+            </TableCell>
+            <TableCell>
+              Destination
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        
           {
             urls.map(({sitePath, shortUrl, longUrl}, index) => (
-              <tr key={index}>
-                <td>
+              <TableRow key={index}>
+                <TableCell>
                   <Link to={sitePath}>{shortUrl}</Link>
-                </td>
-                <td>
-                  <Link to={longUrl}>{longUrl}</Link>
-                </td>
-              </tr>
+                </TableCell>
+                <TableCell>
+                  {longUrl}
+                  {/* <Link to={longUrl}>{longUrl}</Link> */}
+                </TableCell>
+              </TableRow>
             ))
           }
-        </tbody>
-      </table>
-    </div>
+
+        </TableBody>
+      </Table>
+    </TableContainer>
   </div> /* close container */
 );
 

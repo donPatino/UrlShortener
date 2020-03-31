@@ -7,6 +7,8 @@ import {
   Route,
 } from "react-router-dom";
 
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
+
 import './App.css';
 
 import { listUrls } from './graphql/queries';
@@ -33,6 +35,7 @@ let App = () => {
       let tmpUrls = await getUrls();
       tmpUrls.map(url => {
         url.sitePath = `/r/${url.shortUrl}`;
+        return url;
       });
       updateUrls(tmpUrls);
     };
@@ -41,6 +44,15 @@ let App = () => {
 
   return(
     <Router>
+    
+      <AppBar>
+        <Toolbar>
+          <Typography variant="h3">
+            Web Bookmarks
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    
       <Switch>
 
         <Route exact path="/">
