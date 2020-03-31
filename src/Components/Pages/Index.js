@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 
+import { Button, TextField } from '@material-ui/core';
+
 import {Link} from "react-router-dom";
 
 import { Formik } from 'formik';
@@ -9,7 +11,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { createUrl } from '../../graphql/mutations';
 
 let AddURL = ({urls, updateUrls}) => {
-    
+
     console.log(urls);
 
     let addUrl = async (values) => {
@@ -23,7 +25,7 @@ let AddURL = ({urls, updateUrls}) => {
         throw new Error('Failed to add URL. ' + err.message);
       }
     };
-    
+
   const [addUrlSection, setAddUrlSection] = useState(false);
 
   let toggleUrlSection = () => {
@@ -33,7 +35,7 @@ let AddURL = ({urls, updateUrls}) => {
   if (addUrlSection) {
     return (
       <div>
-        <button id="add-url" onClick={toggleUrlSection}>Cancel Add Url</button>
+        <Button color="primary" variant="contained" onClick={toggleUrlSection}>Cancel Add Url</Button>
 
           <Formik
             initialValues={{ shortUrl: '', longUrl: '' }}
@@ -74,35 +76,36 @@ let AddURL = ({urls, updateUrls}) => {
               /* and other goodies */
             }) => (
               <form onSubmit={handleSubmit}>
-                <label>URL Key: </label>
-                <input
+                <TextField
                   id="shortUrl"
                   type="shortUrl"
                   name="shortUrl"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.email}
+                  value={values.shortUrl}
+                  error={touched.shortUrl && errors.shortUrl}
+                  helperText={touched.shortUrl && errors.shortUrl}
+                  label="URL Key"
                 />
-                <font color="red">
-                 {errors.shortUrl && touched.shortUrl && errors.shortUrl}
-                </font>
-                
+
                 <br/>
-                
-                <label>Destination: </label>
-                <input
+
+                <TextField
                   type="longUrl"
                   name="longUrl"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.longUrl}
+                  error={touched.longUrl && errors.longUrl}
+                  helperText={touched.longUrl && errors.longUrl}
+                  label="Destination"
                 />
-                <font color="red">
-                  {errors.longUrl && touched.longUrl && errors.longUrl}
-                </font>
-                <button type="submit" disabled={isSubmitting}>
+
+                <br/>
+
+                <Button type="submit" color="primary" variant="contained" disabled={isSubmitting}>
                   Submit
-                </button>
+                </Button>
               </form>
             )}
           </Formik>
@@ -112,43 +115,40 @@ let AddURL = ({urls, updateUrls}) => {
   } else {
     return (
       <div>
-        <button id="add-url" onClick={toggleUrlSection}>Add Url</button>
+        <Button color="primary" variant="contained" onClick={toggleUrlSection}>Add Url</Button>
       </div>
     );
   }
 };
 
-let Index = ({urls, updateUrls}) => {
-
-  return (
-    <div className="container">
-      <AddURL urls={urls} updateUrls={updateUrls} />
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th>KEY</th>
-              <th>Destination</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              urls.map(({sitePath, shortUrl, longUrl}, index) => (
-                <tr key={index}>
-                  <td>
-                    <Link to={sitePath}>{shortUrl}</Link>
-                  </td>
-                  <td>
-                    <Link to={longUrl}>{longUrl}</Link>
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </div>
-    </div> /* close container */
-  );
-};
+let Index = ({urls, updateUrls}) => (
+  <div className="container">
+    <AddURL urls={urls} updateUrls={updateUrls} />
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>KEY</th>
+            <th>Destination</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            urls.map(({sitePath, shortUrl, longUrl}, index) => (
+              <tr key={index}>
+                <td>
+                  <Link to={sitePath}>{shortUrl}</Link>
+                </td>
+                <td>
+                  <Link to={longUrl}>{longUrl}</Link>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div> /* close container */
+);
 
 export default Index;
