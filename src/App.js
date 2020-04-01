@@ -5,9 +5,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  NavLink
 } from "react-router-dom";
 
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
 
 import './App.css';
 
@@ -16,6 +17,7 @@ import { listUrls } from './graphql/queries';
 import Index from './Components/Pages/Index';
 import NoMatch from './Components/Pages/NoMatch';
 import RedirectUI from './Components/Pages/RedirectUI';
+import AddURL from './Components/Pages/AddURL';
 
 let getUrls = async () => {
   try {
@@ -46,24 +48,44 @@ let App = () => {
     <Router>
     
       <AppBar>
-        <Toolbar>
-          <Typography variant="h3">
+        <Toolbar className="toolbar">
+          <Typography variant="h3" className="title">
             Web Bookmarks
           </Typography>
+          <Button
+            component={NavLink}
+            exact
+            to="/"
+            activeStyle={{background:"red",fontWeight:"bold"}}
+          >
+            Table
+          </Button>
+          <Button
+            component={NavLink}
+            to="/add"
+            activeStyle={{background:"red",fontWeight:"bold"}}
+          >
+            Add
+          </Button>
         </Toolbar>
       </AppBar>
     
+      <div className="spacer">
       <Switch>
-
-        <Route exact path="/">
-          <Index urls={urls} updateUrls={updateUrls} />
-        </Route>
-
-        <Route path="/r">
-          <RedirectUI/>
-        </Route>
-        <Route component={NoMatch} />
-      </Switch>
+          <Route exact path="/">
+            <Index urls={urls} updateUrls={updateUrls} />
+          </Route>
+          
+          <Route exact path="/add">
+            <AddURL/>
+          </Route>
+  
+          <Route path="/r">
+            <RedirectUI/>
+          </Route>
+          <Route component={NoMatch} />
+        </Switch>
+      </div>
 
     </Router>
   );

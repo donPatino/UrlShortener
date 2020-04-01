@@ -1,6 +1,27 @@
 .container {
   display: grid;
    grid-template-columns: 1fr 4fr 1fr;
-   justify-items: center;
-   margin-top: 80px;
+   justify-content: center;
+}
+
+.spacer {
+    margin-top: 75px;
+}
+
+.form-paper {
+    padding: 20px;
+}
+
+form {
+    display: grid;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-active {
+    color: red;
+    font-weight: bold;
 }
