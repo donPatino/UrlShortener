@@ -15,8 +15,6 @@ import { API, graphqlOperation } from 'aws-amplify';
 
 let AddURL = ({urls, updateUrls}) => {
 
-    console.log(urls);
-
     let addUrl = async (values) => {
       try {
         var response = await API.graphql(graphqlOperation(createUrl, {input: values} ));

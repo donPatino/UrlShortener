@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import { API, graphqlOperation } from 'aws-amplify';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,6 +19,14 @@ import Index from './Components/Pages/Index';
 import NoMatch from './Components/Pages/NoMatch';
 import RedirectUI from './Components/Pages/RedirectUI';
 import AddURL from './Components/Pages/AddURL';
+
+/*
+TODO: Add edit URL
+TODO: Add pagination
+https://forums.aws.amazon.com/thread.jspa?messageID=892764&#892764
+
+TODO: Add auth
+*/
 
 let getUrls = async () => {
   try {
@@ -42,7 +51,7 @@ let App = () => {
       updateUrls(tmpUrls);
     };
     setUrls();
-  }, []);
+  }, [urls]);
 
   return(
     <Router>
