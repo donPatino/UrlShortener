@@ -15,23 +15,20 @@ import './App.css';
 
 import { listUrls } from './graphql/queries';
 
-import Index from './Components/Pages/Index';
+import UrlTable from './Components/Pages/UrlTable';
 import NoMatch from './Components/Pages/NoMatch';
 import RedirectUI from './Components/Pages/RedirectUI';
 import AddURL from './Components/Pages/AddURL';
 
 /*
 TODO: Add edit URL
-TODO: Add pagination
-https://forums.aws.amazon.com/thread.jspa?messageID=892764&#892764
-
 TODO: Add auth
 */
 
 let getUrls = async () => {
   try {
     var urlData = await API.graphql(graphqlOperation(listUrls));
-    return urlData.data.listUrls.items;
+    return [urlData.data.listUrls.items, urlData.data.listUrls.nextToken];
     // updateUrls(urlData.data.listUrls.items);
   } catch (err) {
     console.log('Error getting urls. ' + err.message);
@@ -40,10 +37,12 @@ let getUrls = async () => {
 
 let App = () => {
   const [urls, updateUrls] = useState([]);
+  const [nextToken, setNextToken] = useState();
 
   useEffect(() => {
     let setUrls = async () => {
-      let tmpUrls = await getUrls();
+      let [tmpUrls, tmpNextToken] = await getUrls();
+      setNextToken(tmpNextToken);
       tmpUrls.map(url => {
         url.sitePath = `/r/${url.shortUrl}`;
         return url;
@@ -51,11 +50,11 @@ let App = () => {
       updateUrls(tmpUrls);
     };
     setUrls();
-  }, [urls]);
+  }, []);
 
   return(
     <Router>
-    
+
       <AppBar>
         <Toolbar className="toolbar">
           <Typography variant="h3" className="title">
@@ -78,17 +77,22 @@ let App = () => {
           </Button>
         </Toolbar>
       </AppBar>
-    
+
       <div className="spacer">
       <Switch>
           <Route exact path="/">
-            <Index urls={urls} updateUrls={updateUrls} />
+            <UrlTable
+              urls={urls}
+              updateUrls={updateUrls}
+              nextToken={nextToken}
+              setNextToken={setNextToken}
+            />
           </Route>
-          
+
           <Route exact path="/add">
             <AddURL/>
           </Route>
-  
+
           <Route path="/r">
             <RedirectUI/>
           </Route>
